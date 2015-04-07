@@ -5,8 +5,11 @@
 
 bool InitQueue(Queue &Q)
 {
-	Q.front = NULL;
-	Q.rear = NULL;
+	QNode *head = new QNode;
+	head->data = 0;
+	head->next = NULL;
+	Q.front = head;
+	Q.rear = head;
 	return true;
 }
 
@@ -15,8 +18,8 @@ bool DestroyQueue(Queue &Q)
 	QNode *del;
 	while (Q.front){
 		del = Q.front;
-		delete del;
 		Q.front = Q.front->next;
+		delete del;
 	}
 	Q.front = NULL;
 	Q.rear = NULL;
@@ -28,11 +31,16 @@ bool ClearQueue(Queue &Q)
 	QNode *del;
 	while (Q.front){
 		del = Q.front;
-		delete del;
 		Q.front = Q.front->next;
+		delete del;
 	}
-	Q.front = NULL;
-	Q.rear = NULL;
+
+	QNode *head = new QNode;
+	head->data = 0;
+	head->next = NULL;
+	Q.front = head;
+	Q.rear = head;
+
 	return true;
 }
 
@@ -46,25 +54,15 @@ bool QueueEmpty(Queue Q)
 
 int QueueLength(Queue Q)
 {
-	if (NULL == Q.front)
-		return 0;
-	else{
-		int i = 1;
-		while (Q.front!=Q.rear)
-		{
-			Q.front = Q.front->next;
-			i++;
-		}
-		return i;
-	}
+	return Q.front->data;
 }
 
 bool GetHead(Queue Q, ElemType &e)
 {
-	if (NULL == Q.front)
+	if (Q.rear == Q.front)
 		return false;
 
-	e = Q.front->data;
+	e = Q.front->next->data;
 	return true;
 }
 
@@ -79,19 +77,23 @@ bool EnQueue(Queue &Q, ElemType e)
 	Q.rear->next = temp;
 	Q.rear = temp; 
 
+	Q.front->data++;
+
 	return true;
 }
 
 bool DeQueue(Queue &Q, ElemType &e)
 {
-	if (!Q.front)
+	if (!Q.front->next)
 		return false;
 
-	QNode *temp = Q.front;
-	Q.front = Q.front->next;
+	QNode *temp = Q.front->next;
+	Q.front->next = temp->next;
 
 	e = temp->data;
 	delete temp;
+
+	Q.front->data--;
 
 	return true;
 }
@@ -99,7 +101,7 @@ bool DeQueue(Queue &Q, ElemType &e)
 void QueueTraverse(Queue &Q, void(*traverse)(ElemType &e))
 {
 	QNode *p;
-	p = Q.front;
+	p = Q.front->next;
 	while (p){
 		traverse(p->data);
 		p = p->next;
