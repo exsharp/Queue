@@ -87,6 +87,10 @@ bool DeQueue(Queue &Q, ElemType &e)
 	if (!Q.front->next)
 		return false;
 
+	if (Q.front->next == Q.rear){
+		Q.rear = Q.front;
+	}
+
 	QNode *temp = Q.front->next;
 	Q.front->next = temp->next;
 

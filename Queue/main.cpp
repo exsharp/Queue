@@ -5,6 +5,7 @@ using namespace std;
 #include "queue.h"
 
 void printElem(ElemType &e);
+void hanoi(int n, char A, char B, char C);
 
 int main()
 {
@@ -29,6 +30,7 @@ int main()
 		cout << "6.QueueEmpty" << endl;
 		cout << "7.ClearQueue" << endl;
 		cout << "8.DestroyQueue" << endl;
+		cout << "9.Hanoi" << endl;
 		cin >> select;
 
 		system("cls");
@@ -72,6 +74,12 @@ int main()
 		case 8:
 			cout << "Destroy" << (DestroyQueue(Q) ? "³É¹¦" : "Ê§°Ü") << endl;
 			break;
+		case 9:
+			system("cls");
+			cout << "ÊäÈë½×" << endl;
+			cin >> elem;
+			hanoi(elem, 'A', 'B', 'C');
+			break;
 		default:
 			DestroyQueue(Q);
 			exit(1);
@@ -84,4 +92,15 @@ int main()
 void printElem(ElemType &e)
 {
 	cout << e << " ";
+}
+
+void hanoi(int n, char A, char B, char C)
+{
+	if (1 == n)
+		cout << A << "->" << C << endl;
+	else{
+		hanoi(n - 1, A, C, B);
+		hanoi(1, A, B, C);
+		hanoi(n - 1, B, A, C);
+	}
 }
