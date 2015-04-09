@@ -86,8 +86,6 @@ bool EnQueue(Queue &Q, ElemType e)
 	Q.rear->next = temp;
 	Q.rear = temp; 
 
-	Q.front->data++;
-
 	return true;
 }
 
@@ -99,7 +97,7 @@ bool DeQueue(Queue &Q, ElemType &e)
 	QNode *p = Q.front;
 	Q.front = Q.front->next;
 
-	e = p->data;
+	e = Q.front->data;
 	delete p;
 
 	return true;
