@@ -29,6 +29,7 @@ bool DestroyQueue(Queue &Q)
 bool ClearQueue(Queue &Q)
 {
 	QNode *del;
+
 	while (Q.front){
 		del = Q.front;
 		Q.front = Q.front->next;
@@ -54,7 +55,15 @@ bool QueueEmpty(Queue Q)
 
 int QueueLength(Queue Q)
 {
-	return Q.front->data;
+	int length = 0;
+	Q.front = Q.front->next;
+
+	while (Q.front){
+		Q.front = Q.front->next;
+		++length;
+	}
+
+	return length;
 }
 
 bool GetHead(Queue Q, ElemType &e)
@@ -87,17 +96,11 @@ bool DeQueue(Queue &Q, ElemType &e)
 	if (!Q.front->next)
 		return false;
 
-	if (Q.front->next == Q.rear){
-		Q.rear = Q.front;
-	}
+	QNode *p = Q.front;
+	Q.front = Q.front->next;
 
-	QNode *temp = Q.front->next;
-	Q.front->next = temp->next;
-
-	e = temp->data;
-	delete temp;
-
-	Q.front->data--;
+	e = p->data;
+	delete p;
 
 	return true;
 }
